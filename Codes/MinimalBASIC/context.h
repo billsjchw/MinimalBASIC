@@ -5,14 +5,13 @@
 #include <QHash>
 #include <QString>
 
-class Context: public QObject {
-private:
-    QHash<QString, int> vars;
+class Context {
 public:
-    explicit Context(QObject *parent = nullptr);
     void set(const QString &identifier, int value);
     int get(const QString &identifier) const;
     bool isDefined(const QString &identifier) const;
+private:
+    QHash<QString, int> vars;
 };
 
 #endif // CONTEXT_H

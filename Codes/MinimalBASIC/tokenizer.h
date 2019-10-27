@@ -1,13 +1,11 @@
 #ifndef TOKENIZER_H
 #define TOKENIZER_H
 
-#include <QObject>
 #include <QString>
 #include <QStringList>
 
-class Tokenizer: public QObject {
+class Tokenizer {
 public:
-    explicit Tokenizer(QObject *parent = nullptr);
     static QStringList tokenize(const QString &str);
 };
 

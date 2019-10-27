@@ -1,40 +1,40 @@
 #ifndef EXPRESSION_H
 #define EXPRESSION_H
 
-#include <QObject>
 #include <QString>
 #include "context.h"
 
 class Expression: public QObject {
 public:
-    explicit Expression(QObject *parent = nullptr);
     virtual int eval(const Context *context) = 0;
     virtual ~Expression();
 };
 
 class ConstantExp: public Expression {
+public:
+    explicit ConstantExp(int constant);
+    virtual int eval(const Context *) override;
 private:
     int constant;
-public:
-    explicit ConstantExp(int constant, QObject *parent = nullptr);
-    virtual int eval(const Context *);
 };
 
 class IdentifierExp: public Expression {
+public:
+    explicit IdentifierExp(QString identifier);
+    virtual int eval(const Context *context) override;
 private:
     QString identifier;
-public:
-    explicit IdentifierExp(QString identifier, QObject *parent = nullptr);
-    virtual int eval(const Context *context);
 };
 
 class CompoundExp: public Expression {
+public:
+    explicit CompoundExp(QString op, Expression *lhs, Expression *rhs);
+    virtual ~CompoundExp() override;
+    virtual int eval(const Context *context) override;
 private:
     QString op;
     Expression *lhs, *rhs;
-public:
-    explicit CompoundExp(QString op, Expression *lhs, Expression *rhs, QObject *parent = nullptr);
-    virtual int eval(const Context *context);
+    int intPow(int lhs, int rhs);
 };
 
 #endif // EXPRESSION_H

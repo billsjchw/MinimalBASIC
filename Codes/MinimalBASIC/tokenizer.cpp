@@ -1,7 +1,5 @@
 #include "tokenizer.h"
 
-Tokenizer::Tokenizer(QObject *parent): QObject(parent) {}
-
 QStringList Tokenizer::tokenize(const QString &str) {
     QStringList ret;
     QString special = "+-*/()";

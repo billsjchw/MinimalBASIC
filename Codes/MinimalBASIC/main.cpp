@@ -4,7 +4,9 @@
 #include "context.h"
 #include "expression.h"
 #include "tokenizer.h"
-#include <exception>
+#include "parser.h"
+#include "error.h"
+#include <QString>
 
 int main(int argc, char *argv[]) {
     QCoreApplication minimalBasic(argc, argv);
@@ -12,19 +14,16 @@ int main(int argc, char *argv[]) {
     Context *context = new Context();
     context->set("x", 10);
 
-    ConstantExp *constantExp = new ConstantExp(20);
-    IdentifierExp *identifierExp = new IdentifierExp("x");
-    CompoundExp *compoundExp = new CompoundExp("/", constantExp, identifierExp);
-
+    Expression *exp = nullptr;
     try {
-        int value = compoundExp->eval(context);
-        qDebug() << value;
-    } catch (const std::exception &e) {
-        qDebug() << e.what();
+        exp = Parser::parse(Tokenizer::tokenize("1 - 2 ** x * 3 - (x + 7)"));
+        qDebug() << exp->eval(context);
+    } catch (const Error &err) {
+        qDebug() << err.what();
     }
 
-    context->deleteLater();
-    compoundExp->deleteLater();
+    delete exp;
+    delete context;
 
     QTimer::singleShot(0, &minimalBasic, QCoreApplication::quit);
     return minimalBasic.exec();
