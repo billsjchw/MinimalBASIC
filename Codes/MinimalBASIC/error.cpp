@@ -1,44 +1,44 @@
 #include "error.h"
 #include <climits>
 
-Error::~Error() {}
+Error::Error():
+    explanation("An Unknown error occurred.") {}
+
+Error::Error(const QString &explanation): explanation(explanation) {}
 
 QString Error::what() const {
-    return "Something wrong occurred";
+    return explanation;
 }
 
-IdentifierUndefined::IdentifierUndefined(const QString &identifier): identifier(identifier) {}
+IdentifierUndefined::IdentifierUndefined(const QString &identifier):
+    Error("Identifier \"" + identifier + "\" is undefined.") {}
 
-QString IdentifierUndefined::what() const {
-    return "Identifier \"" + identifier + "\" is undefined.";
-}
+NegtivePowRhs::NegtivePowRhs():
+    Error("The right-hand side operand of ** should be nonnegative.") {}
 
-QString NegtivePowRhs::what() const {
-    return "The right-hand side operand of ** should be nonnegative.";
-}
+ZeroPowZero::ZeroPowZero():
+    Error("0 ** 0 occurred.") {}
 
-QString ZeroPowZero::what() const {
-    return "0 ** 0 occurred.";
-}
+DivisionByZero::DivisionByZero():
+    Error("Division by 0 occurred.") {}
 
-QString DivisionByZero::what() const {
-    return "Division by 0 occurred.";
-}
+ConstantOutOfRange::ConstantOutOfRange(const QString &token):
+    Error("Constant " + token + " is out of range [0, " + QString::number(INT_MAX) + "].") {}
 
-ConstantOutOfRange::ConstantOutOfRange(const QString &token): token(token) {}
+InvalidIndentifier::InvalidIndentifier(const QString &token):
+    Error("\"" + token + "\" is not a valid identifier.") {}
 
-QString ConstantOutOfRange::what() const {
-    return "Constant \"" + token + "\" is out of range ([0, " + QString::number(INT_MAX) + "])";
-}
+LineNumberOutOfRange::LineNumberOutOfRange(const QString &token):
+    Error("Line number " + token + " is out of range [1, " + QString::number(INT_MAX) + "].") {}
 
-InvalidIdentifier::InvalidIdentifier(const QString &token): token(token) {}
+NoAssignmentInLetStmt::NoAssignmentInLetStmt():
+    Error("No assignment token found in LET statement.") {}
 
-QString InvalidIdentifier::what() const {
-    return "\"" + token + "\" is not a valid identifier.";
-}
+MissingStmtName::MissingStmtName():
+    Error("Statement name is missing.") {}
 
-WrongExpression::WrongExpression(const QString &str): str(str) {}
+WrongStmtName::WrongStmtName(const QString &name):
+    Error("No statement is named \"" + name.toUpper() + "\".") {}
 
-QString WrongExpression::what() const {
-    return "\"" + str + "\" is not an expression.";
-}
+StmtCannotImmExec::StmtCannotImmExec(const QString &name):
+    Error(name.toUpper() + " statement cannot be executed immediately.") {}

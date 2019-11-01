@@ -6,55 +6,66 @@
 
 class Error {
 public:
-    virtual QString what() const;
-    virtual ~Error();
+    explicit Error();
+    explicit Error(const QString &explanation);
+    QString what() const;
+private:
+    QString explanation;
 };
 
 class IdentifierUndefined: public Error {
 public:
     explicit IdentifierUndefined(const QString &identifier);
-    virtual QString what() const override;
-private:
-    QString identifier;
 };
 
 class NegtivePowRhs: public Error {
 public:
-    virtual QString what() const override;
+    explicit NegtivePowRhs();
 };
 
 class ZeroPowZero: public Error {
 public:
-    virtual QString what() const override;
+    explicit ZeroPowZero();
 };
 
 class DivisionByZero: public Error {
 public:
-    virtual QString what() const override;
+    explicit DivisionByZero();
 };
 
 class ConstantOutOfRange: public Error {
 public:
     explicit ConstantOutOfRange(const QString &token);
-    virtual QString what() const override;
-private:
-    QString token;
 };
 
-class InvalidIdentifier: public Error {
+class InvalidIndentifier: public Error {
 public:
-    explicit InvalidIdentifier(const QString &token);
-    virtual QString what() const override;
-private:
-    QString token;
+    explicit InvalidIndentifier(const QString &token);
 };
 
-class WrongExpression: public Error {
+class LineNumberOutOfRange: public Error {
 public:
-    explicit WrongExpression(const QString &str);
-    virtual QString what() const override;
-private:
-    QString str;
+    explicit LineNumberOutOfRange(const QString &token);
+};
+
+class NoAssignmentInLetStmt: public Error {
+public:
+    explicit NoAssignmentInLetStmt();
+};
+
+class MissingStmtName: public Error {
+public:
+    explicit MissingStmtName();
+};
+
+class WrongStmtName: public Error {
+public:
+    explicit WrongStmtName(const QString &name);
+};
+
+class StmtCannotImmExec: public Error {
+public:
+    explicit StmtCannotImmExec(const QString &name);
 };
 
 #endif // ERROR_H

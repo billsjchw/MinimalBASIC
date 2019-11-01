@@ -10,13 +10,21 @@ int ConstantExp::eval(const Context *) {
     return constant;
 }
 
+QString ConstantExp::toString() {
+    return QString::number(constant);
+}
+
 IdentifierExp::IdentifierExp(QString identifier): identifier(identifier) {}
 
 int IdentifierExp::eval(const Context *context) {
     if (context->isDefined(identifier))
-        return context->get(identifier);
+        return context->getVar(identifier);
     else
         throw IdentifierUndefined(identifier);
+}
+
+QString IdentifierExp::toString() {
+    return identifier;
 }
 
 CompoundExp::CompoundExp(QString op, Expression *lhs, Expression *rhs):
@@ -30,7 +38,6 @@ CompoundExp::~CompoundExp() {
 int CompoundExp::eval(const Context *context) {
     int lhsValue = lhs->eval(context);
     int rhsValue = rhs->eval(context);
-//    qDebug() << lhsValue << op << rhsValue;
     if (op == "+")
         return lhsValue + rhsValue;
     else if (op == "-")
@@ -50,6 +57,10 @@ int CompoundExp::eval(const Context *context) {
         else
             throw DivisionByZero();
     }
+}
+
+QString CompoundExp::toString() {
+    return "exp";
 }
 
 int CompoundExp::intPow(int lhs, int rhs) {

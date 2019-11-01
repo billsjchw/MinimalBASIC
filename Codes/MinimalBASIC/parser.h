@@ -10,9 +10,7 @@ public:
     static Expression * parse(const QStringList &tokens);
 private:
     static int precedence(const QString &op);
-    static bool isLeftPrecedence(int precedence);
-    static bool isNumericString(const QString &str);
-    static bool isValidIdentifier(const QString &identifier);
+    static bool isLeftAssociation(int precedence);
 };
 
 #endif // PARSER_H

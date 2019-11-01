@@ -1,12 +1,13 @@
 #include "tokenizer.h"
+#include <QRegExp>
 
 QStringList Tokenizer::tokenize(const QString &str) {
     QStringList ret;
     QString special = "+-*/()";
-    QString whitespace = " \t\n";
+    QString whitespace = " \f\r\v\t\n";
     QString token;
     for (int i = 0; i < str.length(); ++i)
-        if (whitespace.contains(str.at(i)))
+        if (QRegExp("\\s").exactMatch(str.at(i)))
             continue;
         else if (special.contains(str.at(i))) {
             if (token.length()) {

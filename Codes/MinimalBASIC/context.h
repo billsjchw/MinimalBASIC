@@ -7,11 +7,14 @@
 
 class Context {
 public:
-    void set(const QString &identifier, int value);
-    int get(const QString &identifier) const;
+    void setVar(const QString &identifier, int value);
+    int getVar(const QString &identifier) const;
+    void setOutput(QString output);
+    QString getOutput();
     bool isDefined(const QString &identifier) const;
 private:
     QHash<QString, int> vars;
+    QString output;
 };
 
 #endif // CONTEXT_H
