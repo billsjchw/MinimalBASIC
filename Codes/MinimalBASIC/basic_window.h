@@ -17,7 +17,9 @@ private slots:
 private:
     Console *console;
     Context *context;
-    Program *program;
+    Program *prog;
+    Program *immProg;
+    void runProgAndOutput(Program *prog);
 };
 
 #endif // BASIC_WINDOW_H

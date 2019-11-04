@@ -42,3 +42,6 @@ WrongStmtName::WrongStmtName(const QString &name):
 
 StmtCannotImmExec::StmtCannotImmExec(const QString &name):
     Error(name.toUpper() + " statement cannot be executed immediately.") {}
+
+LineNotFound::LineNotFound(int lineNum):
+    Error("Line " + QString::number(lineNum) + " doesn't exist.") {}

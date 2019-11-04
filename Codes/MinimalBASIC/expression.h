@@ -38,7 +38,6 @@ public:
 private:
     QString op;
     Expression *lhs, *rhs;
-    int intPow(int lhs, int rhs);
 };
 
 #endif // EXPRESSION_H

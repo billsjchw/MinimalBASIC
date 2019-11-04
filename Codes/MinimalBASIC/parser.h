@@ -8,9 +8,6 @@
 class Parser {
 public:
     static Expression * parse(const QStringList &tokens);
-private:
-    static int precedence(const QString &op);
-    static bool isLeftAssociation(int precedence);
 };
 
 #endif // PARSER_H

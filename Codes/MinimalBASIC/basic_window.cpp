@@ -4,6 +4,7 @@
 #include <QRegExp>
 #include "statement.h"
 #include "error.h"
+#include "util.h"
 #include <QDebug>
 
 BasicWindow::BasicWindow(QWidget *parent): QWidget(parent) {
@@ -13,25 +14,28 @@ BasicWindow::BasicWindow(QWidget *parent): QWidget(parent) {
     console->setGeometry(30, 30, 740, 840);
     connect(console, &Console::newCommandWritten, this, &BasicWindow::handleNewCommand);
     context = new Context();
-    program = new Program();
+    prog = new Program();
+    immProg = new Program();
 }
 
 BasicWindow::~BasicWindow() {
     delete context;
-    delete program;
+    delete prog;
+    delete immProg;
 }
 
 void BasicWindow::handleNewCommand(QString cmd) {
-    QStringList stmtName = { "rem", "print", "let" };
-    QStringList immStmtName = { "print", "let" };
-    QStringList ctrlCmd = { "list", "clear" };
     try {
         cmd = cmd.toLower().trimmed();
-        if (ctrlCmd.contains(cmd)) {
+        if (ctrlCmds.contains(cmd)) {
             if (cmd == "list")
-                console->write(program->toString());
-            else
-                program->clear();
+                console->write(prog->toString());
+            else if (cmd == "clear")
+                prog->clear();
+            else {
+                prog->init();
+                runProgAndOutput(prog);
+            }
         } else {
             QStringList parts = cmd.split(QRegExp("\\s+"), QString::SplitBehavior::SkipEmptyParts);
             if (parts.empty())
@@ -47,9 +51,9 @@ void BasicWindow::handleNewCommand(QString cmd) {
             if (parts.empty())
                 throw MissingStmtName();
             QString name = parts.first();
-            if (!stmtName.contains(name))
+            if (!stmtNames.contains(name))
                 throw WrongStmtName(name);
-            if (lineNum == -1 && !immStmtName.contains(name))
+            if (lineNum == -1 && !immStmtNames.contains(name))
                 throw StmtCannotImmExec(name);
             Statement *stmt;
             if (name == "rem")
@@ -58,19 +62,29 @@ void BasicWindow::handleNewCommand(QString cmd) {
                 stmt = new PrintStmt(cmd);
             else
                 stmt = new LetStmt(cmd);
-            if (lineNum == -1)
-                try {
-                    int nextStep = stmt->exec(context);
-                    if (nextStep == Statement::NextStep::WAIT_FOR_OUTPUT)
-                        console->write(context->getOutput());
-                } catch (const Error &err) {
-                    delete stmt;
-                    throw err;
-                }
+            if (lineNum == -1) {
+                immProg->setStmt(1, stmt);
+                immProg->init();
+                runProgAndOutput(immProg);
+            }
             else
-                program->setStmt(lineNum, stmt);
+                prog->setStmt(lineNum, stmt);
         }
     } catch (const Error &err) {
         console->write(err.what());
+    }
+}
+
+void BasicWindow::runProgAndOutput(Program *prog) {
+    while (prog->getState() != Program::State::INPUT && prog->getState() != Program::State::END) {
+        try {
+            prog->run(context);
+        } catch (const Error &err) {
+            console->write("[Line " + QString::number(prog->getErrLineNum()) + "] " + err.what());
+        }
+        if (prog->getState() == Program::State::OUTPUT) {
+            console->write(prog->getOutput());
+            prog->finishOutput();
+        }
     }
 }

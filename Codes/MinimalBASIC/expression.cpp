@@ -1,5 +1,6 @@
 #include "expression.h"
 #include "error.h"
+#include "util.h"
 #include <QDebug>
 
 Expression::~Expression() {}
@@ -60,15 +61,21 @@ int CompoundExp::eval(const Context *context) {
 }
 
 QString CompoundExp::toString() {
-    return "exp";
-}
-
-int CompoundExp::intPow(int lhs, int rhs) {
-    if (!rhs)
-        return 1;
-    int ret = intPow(lhs, rhs / 2);
-    ret *= ret;
-    if (rhs % 2)
-        ret *= lhs;
-    return ret;
+    QString lhsStr = lhs->toString();
+    QString rhsStr = rhs->toString();
+    if (typeid(*lhs) == typeid(CompoundExp)) {
+        QString lhsOp = dynamic_cast<CompoundExp *>(lhs)->op;
+        int pl = precedence(lhsOp);
+        int pm = precedence(op);
+        if (pl > pm || (pl == pm && !isLeftAssociation(pl)))
+            lhsStr = "(" + lhsStr + ")";
+    }
+    if (typeid(*rhs) == typeid(CompoundExp)) {
+        QString rhsOp = dynamic_cast<CompoundExp *>(rhs)->op;
+        int pr = precedence(rhsOp);
+        int pm = precedence(op);
+        if (pr > pm || (pr == pm && isLeftAssociation(pr)))
+            rhsStr = "(" + rhsStr + ")";
+    }
+    return lhsStr + " " + op + " " +rhsStr;
 }

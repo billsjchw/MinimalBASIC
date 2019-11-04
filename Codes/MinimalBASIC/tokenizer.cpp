@@ -4,7 +4,6 @@
 QStringList Tokenizer::tokenize(const QString &str) {
     QStringList ret;
     QString special = "+-*/()";
-    QString whitespace = " \f\r\v\t\n";
     QString token;
     for (int i = 0; i < str.length(); ++i)
         if (QRegExp("\\s").exactMatch(str.at(i)))

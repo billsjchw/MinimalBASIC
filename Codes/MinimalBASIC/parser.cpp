@@ -2,21 +2,17 @@
 #include <QStack>
 #include <QRegExp>
 #include "error.h"
+#include "util.h"
 #include <QDebug>
 
 Expression * Parser::parse(const QStringList &tokens) {
     QStack<QString> opStack;
     QStack<Expression *> expStack;
-    QStringList opList = { "+", "-", "*", "/", "**" };
-    QStringList keywords = {
-        "rem", "let", "print", "input", "goto", "if", "then", "end",
-        "run", "list", "clear", "help", "quit"
-    };
     try {
         for (int i = 0; i < tokens.size(); ++i) {
             QString token = tokens.at(i);
-            if (opList.contains(token)) {
-                while (!opStack.empty() && opList.contains(opStack.top())) {
+            if (ops.contains(token)) {
+                while (!opStack.empty() && ops.contains(opStack.top())) {
                     int pl = precedence(opStack.top());
                     int pr = precedence(token);
                     if (pl < pr || (pl == pr && isLeftAssociation(pl))) {
@@ -65,17 +61,4 @@ Expression * Parser::parse(const QStringList &tokens) {
         }
     }
     return expStack.top();
-}
-
-int Parser::precedence(const QString &op) {
-    if (op == "**")
-        return 0;
-    else if (op == "*" || op == "/")
-        return 1;
-    else
-        return 2;
-}
-
-bool Parser::isLeftAssociation(int precedence) {
-    return precedence;
 }

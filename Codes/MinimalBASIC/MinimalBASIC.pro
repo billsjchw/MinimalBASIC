@@ -8,7 +8,8 @@ SOURCES += \
     parser.cpp \
     program.cpp \
     statement.cpp \
-    tokenizer.cpp
+    tokenizer.cpp \
+    util.cpp
 
 HEADERS += \
     basic_window.h \
@@ -19,6 +20,7 @@ HEADERS += \
     parser.h \
     program.h \
     statement.h \
-    tokenizer.h
+    tokenizer.h \
+    util.h
 
 QT += widgets

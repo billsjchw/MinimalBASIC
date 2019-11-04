@@ -5,6 +5,7 @@
 #include "tokenizer.h"
 #include "parser.h"
 #include "error.h"
+#include "program.h"
 #include <QDebug>
 
 Statement::~Statement() {}
@@ -14,8 +15,8 @@ RemStmt::RemStmt(const QString &cmd) {
     comment = cmd.mid(idxRem + 3).trimmed();
 }
 
-int RemStmt::exec(Context *) {
-    return NextStep::NEXT_STMT;
+void RemStmt::exec(Program *prog, Context *) {
+    ++prog->pc;
 }
 
 QString RemStmt::toString() {
@@ -44,9 +45,9 @@ LetStmt::~LetStmt() {
     delete exp;
 }
 
-int LetStmt::exec(Context *context) {
+void LetStmt::exec(Program *prog, Context *context) {
     context->setVar(identifier, exp->eval(context));
-    return NextStep::NEXT_STMT;
+    ++prog->pc;
 }
 
 QString LetStmt::toString() {
@@ -63,10 +64,11 @@ PrintStmt::~PrintStmt() {
     delete exp;
 }
 
-int PrintStmt::exec(Context *context) {
+void PrintStmt::exec(Program *prog, Context *context) {
     int value = exp->eval(context);
-    context->setOutput(QString::number(value));
-    return NextStep::WAIT_FOR_OUTPUT;
+    prog->output = QString::number(value);
+    prog->state = Program::State::OUTPUT;
+    ++prog->pc;
 }
 
 QString PrintStmt::toString() {

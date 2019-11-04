@@ -68,4 +68,9 @@ public:
     explicit StmtCannotImmExec(const QString &name);
 };
 
+class LineNotFound: public Error {
+public:
+    explicit LineNotFound(int lineNum);
+};
+
 #endif // ERROR_H

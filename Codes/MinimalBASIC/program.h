@@ -3,16 +3,34 @@
 
 #include <QMap>
 #include <QString>
-#include "statement.h"
+#include "context.h"
+
+class Statement;
 
 class Program {
+public:
+    enum State { NONE, INPUT, OUTPUT, AFTER_INPUT, END };
 public:
     ~Program();
     void setStmt(int lineNum, Statement *stmt);
     void clear();
+    void init();
+    void run(Context *context);
+    void setInput(const QString &input);
+    void finishOutput();
+    State getState();
+    QString getOutput();
+    int getErrLineNum();
     QString toString();
 private:
     QMap<int, Statement *> stmts;
+    QMap<int, Statement *>::const_iterator pc;
+    State state;
+    QString input;
+    QString output;
+friend class RemStmt;
+friend class LetStmt;
+friend class PrintStmt;
 };
 
 #endif // PROGRAM_H
