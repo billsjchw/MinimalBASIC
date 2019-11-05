@@ -5,7 +5,9 @@
 #include <QString>
 #include <QDebug>
 
-Console::Console(QWidget *parent) : QTextEdit(parent) {}
+Console::Console(QWidget *parent) : QTextEdit(parent) {
+    setFontFamily("Courier New");
+}
 
 void Console::write(QString msg)
 {

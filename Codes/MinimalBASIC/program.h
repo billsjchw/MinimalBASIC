@@ -11,6 +11,7 @@ class Program {
 public:
     enum State { NONE, INPUT, OUTPUT, AFTER_INPUT, END };
 public:
+    explicit Program();
     ~Program();
     void setStmt(int lineNum, Statement *stmt);
     void clear();
@@ -31,6 +32,10 @@ private:
 friend class RemStmt;
 friend class LetStmt;
 friend class PrintStmt;
+friend class InputStmt;
+friend class EndStmt;
+friend class GotoStmt;
+friend class IfStmt;
 };
 
 #endif // PROGRAM_H

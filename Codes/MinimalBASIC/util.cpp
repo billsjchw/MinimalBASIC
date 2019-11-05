@@ -7,9 +7,9 @@ const QStringList keywords = {
     "run", "list", "clear", "help", "quit"
 };
 
-const QStringList stmtNames = { "rem", "print", "let" };
+const QStringList stmtNames = { "rem", "print", "let", "input", "end", "goto", "if" };
 
-const QStringList immStmtNames = { "print", "let" };
+const QStringList immStmtNames = { "print", "let", "input" };
 
 const QStringList ctrlCmds = { "list", "clear", "run" };
 

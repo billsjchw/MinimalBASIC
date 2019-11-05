@@ -68,9 +68,49 @@ public:
     explicit StmtCannotImmExec(const QString &name);
 };
 
+class NonNumericalInput: public Error {
+public:
+    explicit NonNumericalInput(const QString &input);
+};
+
+class InputNumberOutOfRange: public Error {
+public:
+    explicit InputNumberOutOfRange(const QString &input);
+};
+
 class LineNotFound: public Error {
 public:
     explicit LineNotFound(int lineNum);
+};
+
+class WrongSyntaxForEndStmt: public Error {
+public:
+    explicit WrongSyntaxForEndStmt();
+};
+
+class NoLineNumberInGotoStmt: public Error {
+public:
+    explicit NoLineNumberInGotoStmt();
+};
+
+class NonNumericInLineNumber: public Error {
+public:
+    explicit NonNumericInLineNumber(const QString &token);
+};
+
+class NoThenInIfStmt: public Error {
+public:
+    explicit NoThenInIfStmt();
+};
+
+class NoCondOpInIfStmt: public Error {
+public:
+    explicit NoCondOpInIfStmt();
+};
+
+class NoLineNumberInIfStmt: public Error {
+public:
+    explicit NoLineNumberInIfStmt();
 };
 
 #endif // ERROR_H

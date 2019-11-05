@@ -26,6 +26,16 @@ BasicWindow::~BasicWindow() {
 
 void BasicWindow::handleNewCommand(QString cmd) {
     try {
+        if (immProg->getState() == Program::State::INPUT) {
+            immProg->setInput(cmd);
+            runProgAndOutput(immProg);
+            return;
+        }
+        if (prog->getState() == Program::State::INPUT) {
+            prog->setInput(cmd);
+            runProgAndOutput(prog);
+            return;
+        }
         cmd = cmd.toLower().trimmed();
         if (ctrlCmds.contains(cmd)) {
             if (cmd == "list")
@@ -60,8 +70,16 @@ void BasicWindow::handleNewCommand(QString cmd) {
                 stmt = new RemStmt(cmd);
             else if (name == "print")
                 stmt = new PrintStmt(cmd);
-            else
+            else if (name == "let")
                 stmt = new LetStmt(cmd);
+            else if (name == "input")
+                stmt = new InputStmt(cmd);
+            else if (name == "end")
+                stmt = new EndStmt(cmd);
+            else if (name == "goto")
+                stmt = new GotoStmt(cmd);
+            else
+                stmt = new IfStmt(cmd);
             if (lineNum == -1) {
                 immProg->setStmt(1, stmt);
                 immProg->init();
@@ -80,11 +98,16 @@ void BasicWindow::runProgAndOutput(Program *prog) {
         try {
             prog->run(context);
         } catch (const Error &err) {
-            console->write("[Line " + QString::number(prog->getErrLineNum()) + "] " + err.what());
+            if (prog == this->prog)
+                console->write("[Line " + QString::number(prog->getErrLineNum()) + "] " + err.what());
+            else
+                console->write(err.what());
         }
         if (prog->getState() == Program::State::OUTPUT) {
             console->write(prog->getOutput());
             prog->finishOutput();
         }
     }
+    if (prog->getState() == Program::State::INPUT)
+        console->write("?");
 }

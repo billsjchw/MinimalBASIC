@@ -2,6 +2,8 @@
 #include "statement.h"
 #include "error.h"
 
+Program::Program(): state(State::END) {}
+
 Program::~Program() {
     clear();
 }
