@@ -9,3 +9,16 @@ int main(int argc, char *argv[]) {
 
     return minimalBasic.exec();
 }
+
+//#include "tokenizer.h"
+//#include <QString>
+//#include <QRegExp>
+//#include <QDebug>
+
+//int main() {
+//    Tokenizer tokenizer;
+
+//    qDebug() << tokenizer.tokenize("a--b");
+
+//    return 0;
+//}

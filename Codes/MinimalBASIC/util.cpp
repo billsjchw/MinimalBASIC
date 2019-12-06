@@ -1,6 +1,6 @@
 #include "util.h"
 
-const QStringList ops = { "+", "-", "*", "/", "**" };
+const QStringList ops = { "+", "-", "*", "/", "**", "u+", "u-" };
 
 const QStringList keywords = {
     "rem", "let", "print", "input", "goto", "if", "then", "end",
@@ -24,14 +24,16 @@ int intPow(int lhs, int rhs) {
 }
 
 int precedence(const QString &op) {
-    if (op == "**")
+    if (op == "u+" || op == "u-")
         return 0;
-    else if (op == "*" || op == "/")
+    else if (op == "**")
         return 1;
-    else
+    else if (op == "*" || op == "/")
         return 2;
+    else
+        return 3;
 }
 
 bool isLeftAssociation(int precedence) {
-    return precedence;
+    return precedence > 1;
 }

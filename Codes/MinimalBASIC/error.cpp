@@ -22,6 +22,9 @@ ZeroPowZero::ZeroPowZero():
 DivisionByZero::DivisionByZero():
     Error("Division by 0 occurred.") {}
 
+IllegalExpression::IllegalExpression(const QString &str):
+    Error("\"" + str + "\" can't be phased as an expression.") {}
+
 ConstantOutOfRange::ConstantOutOfRange(const QString &token):
     Error("Constant " + token + " is out of the range [0, " + QString::number(INT_MAX) + "].") {}
 

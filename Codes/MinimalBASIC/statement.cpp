@@ -30,12 +30,12 @@ LetStmt::LetStmt(const QString &cmd) {
     if (idxAssignment == -1)
         throw NoAssignmentInLetStmt();
     QString token = cmd.mid(idxLet + 3, idxAssignment - (idxLet + 3)).trimmed();
-    if (!QRegExp("[a-z_][a-z0-9_]*").exactMatch(token) || keywords.contains(token))
+    if (!QRegExp("[a-z_][a-z\\d_]*").exactMatch(token) || keywords.contains(token))
         throw InvalidIndentifier(token);
     else
         identifier = token;
     QString str = cmd.mid(idxAssignment + 1);
-    exp = Parser::parse(Tokenizer::tokenize(str));
+    exp = Parser::parse(str);
 }
 
 LetStmt::~LetStmt() {
@@ -54,7 +54,7 @@ QString LetStmt::toString() {
 PrintStmt::PrintStmt(const QString &cmd) {
     int idxPrint = cmd.indexOf("print");
     QString str = cmd.mid(idxPrint + 5);
-    exp = Parser::parse(Tokenizer::tokenize(str));
+    exp = Parser::parse(str);
 }
 
 PrintStmt::~PrintStmt() {
@@ -169,9 +169,9 @@ IfStmt::IfStmt(const QString &cmd) {
     condOp = str.at(idxCondOp);
     QString lhsStr = str.mid(0, idxCondOp);
     QString rhsStr = str.mid(idxCondOp + 1);
-    lhs = Parser::parse(Tokenizer::tokenize(lhsStr));
+    lhs = Parser::parse(lhsStr);
     try {
-        rhs = Parser::parse(Tokenizer::tokenize(rhsStr));
+        rhs = Parser::parse(rhsStr);
     } catch (const Error &) {
         delete lhs;
     }

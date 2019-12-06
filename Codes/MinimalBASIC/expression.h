@@ -31,12 +31,28 @@ private:
 
 class CompoundExp: public Expression {
 public:
-    explicit CompoundExp(QString op, Expression *lhs, Expression *rhs);
-    virtual ~CompoundExp() override;
+    explicit CompoundExp(const QString &op);
+protected:
+    QString op;
+};
+
+class UnaryCompoundExp: public CompoundExp {
+public:
+    explicit UnaryCompoundExp(const QString &op, Expression *rhs);
+    virtual ~UnaryCompoundExp() override;
     virtual int eval(const Context *context) override;
     virtual QString toString() override;
 private:
-    QString op;
+    Expression *rhs;
+};
+
+class BinaryCompoundExp: public CompoundExp {
+public:
+    explicit BinaryCompoundExp(const QString &op, Expression *lhs, Expression *rhs);
+    virtual ~BinaryCompoundExp() override;
+    virtual int eval(const Context *context) override;
+    virtual QString toString() override;
+private:
     Expression *lhs, *rhs;
 };
 

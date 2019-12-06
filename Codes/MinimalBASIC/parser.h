@@ -2,12 +2,11 @@
 #define PARSER_H
 
 #include <QString>
-#include <QStringList>
 #include "expression.h"
 
 class Parser {
 public:
-    static Expression * parse(const QStringList &tokens);
+    static Expression * parse(const QString &str);
 };
 
 #endif // PARSER_H

@@ -1,26 +1,31 @@
 #include "tokenizer.h"
+#include "util.h"
 #include <QRegExp>
 
 QStringList Tokenizer::tokenize(const QString &str) {
     QStringList ret;
-    QString special = "+-*/()";
-    QString token;
-    for (int i = 0; i < str.length(); ++i)
-        if (QRegExp("\\s").exactMatch(str.at(i)))
-            continue;
-        else if (special.contains(str.at(i))) {
-            if (token.length()) {
-                ret.append(token);
-                token.clear();
-            }
-            if (i + 1 < str.length() && str.mid(i, 2) == "**") {
-                ret.append("**");
-                ++i;
+    QStringList parts = str.split(QRegExp("\\s"), QString::SplitBehavior::SkipEmptyParts);
+    for (const QString &part: parts) {
+        QString special = "+-*/()";
+        QString token;
+        for (int i = 0; i < part.length(); ++i)
+            if (special.contains(part.at(i))) {
+                if (token.length()) {
+                    ret.append(token);
+                    token.clear();
+                }
+                if (i + 1 < part.length() && part.mid(i, 2) == "**") {
+                    ret.append("**");
+                    ++i;
+                } else
+                    ret.append(part.at(i));
             } else
-                ret.append(str.at(i));
-        } else
-            token.append(str.at(i));
-    if (token.length())
-        ret.append(token);
+                token.append(part.at(i));
+        if (token.length())
+            ret.append(token);
+    }
+    for (int i = 0; i < ret.length(); ++i)
+        if ((ret.at(i) == "+" || ret.at(i) == "-") && (!i || ret.at(i - i) == "(" || ops.contains(ret.at(i - 1))))
+            ret.replace(i, "u" + ret.at(i));
     return ret;
 }

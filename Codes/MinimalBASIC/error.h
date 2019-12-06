@@ -33,6 +33,11 @@ public:
     explicit DivisionByZero();
 };
 
+class IllegalExpression: public Error {
+public:
+    explicit IllegalExpression(const QString &str);
+};
+
 class ConstantOutOfRange: public Error {
 public:
     explicit ConstantOutOfRange(const QString &token);

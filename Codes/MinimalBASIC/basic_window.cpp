@@ -47,7 +47,7 @@ void BasicWindow::handleNewCommand(QString cmd) {
                 runProgAndOutput(prog);
             }
         } else {
-            QStringList parts = cmd.split(QRegExp("\\s+"), QString::SplitBehavior::SkipEmptyParts);
+            QStringList parts = cmd.split(QRegExp("\\s"), QString::SplitBehavior::SkipEmptyParts);
             if (parts.empty())
                 return;
             int lineNum = -1;
