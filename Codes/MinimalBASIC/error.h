@@ -118,4 +118,9 @@ public:
     explicit NoLineNumberInIfStmt();
 };
 
+class CannotOpenHelpFile: public Error {
+public:
+    explicit CannotOpenHelpFile();
+};
+
 #endif // ERROR_H

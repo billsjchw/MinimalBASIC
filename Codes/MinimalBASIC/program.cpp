@@ -39,11 +39,11 @@ void Program::run(Context *context) {
 
 void Program::setInput(const QString &input) {
     this->input = input;
-    state = AFTER_INPUT;
+    state = State::AFTER_INPUT;
 }
 
 void Program::finishOutput() {
-    state = NONE;
+    state = State::NONE;
 }
 
 Program::State Program::getState() {

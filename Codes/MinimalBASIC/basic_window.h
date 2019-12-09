@@ -1,11 +1,12 @@
 #ifndef BASIC_WINDOW_H
 #define BASIC_WINDOW_H
 
-#include <QWidget>
 #include "console.h"
-#include <QString>
 #include "context.h"
 #include "program.h"
+#include <QWidget>
+#include <QString>
+
 
 class BasicWindow: public QWidget {
     Q_OBJECT

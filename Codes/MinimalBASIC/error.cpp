@@ -72,3 +72,6 @@ NoCondOpInIfStmt::NoCondOpInIfStmt():
 
 NoLineNumberInIfStmt::NoLineNumberInIfStmt():
     Error("No line number is found in IF statement.") {}
+
+CannotOpenHelpFile::CannotOpenHelpFile():
+    Error("It fails to open the help file.") {}

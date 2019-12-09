@@ -24,3 +24,6 @@ HEADERS += \
     util.h
 
 QT += widgets
+
+RESOURCES += \
+    resources.qrc

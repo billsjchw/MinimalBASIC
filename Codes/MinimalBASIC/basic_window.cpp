@@ -1,11 +1,12 @@
 #include "basic_window.h"
-#include <QString>
-#include <QStringList>
-#include <QRegExp>
 #include "statement.h"
 #include "error.h"
 #include "util.h"
-#include <QDebug>
+#include <QString>
+#include <QStringList>
+#include <QRegExp>
+#include <QFile>
+#include <QTextStream>
 
 BasicWindow::BasicWindow(QWidget *parent): QWidget(parent) {
     setWindowTitle("BASIC");
@@ -16,6 +17,7 @@ BasicWindow::BasicWindow(QWidget *parent): QWidget(parent) {
     context = new Context();
     prog = new Program();
     immProg = new Program();
+    console->write("Minimal BASIC -- Type HELP for help.");
 }
 
 BasicWindow::~BasicWindow() {
@@ -42,9 +44,19 @@ void BasicWindow::handleNewCommand(QString cmd) {
                 console->write(prog->toString());
             else if (cmd == "clear")
                 prog->clear();
-            else {
+            else if (cmd == "run") {
                 prog->init();
                 runProgAndOutput(prog);
+            } else if (cmd == "quit")
+                close();
+            else {
+                QFile file(":/txt/help.txt");
+                if (!file.open(QFile::ReadOnly))
+                    throw CannotOpenHelpFile();
+                QTextStream in(&file);
+                QString helpText = in.readAll();
+                file.close();
+                console->write(helpText);
             }
         } else {
             QStringList parts = cmd.split(QRegExp("\\s"), QString::SplitBehavior::SkipEmptyParts);
@@ -89,7 +101,7 @@ void BasicWindow::handleNewCommand(QString cmd) {
                 prog->setStmt(lineNum, stmt);
         }
     } catch (const Error &err) {
-        console->write(err.what());
+        console->write("[Error] " + err.what());
     }
 }
 
@@ -99,9 +111,9 @@ void BasicWindow::runProgAndOutput(Program *prog) {
             prog->run(context);
         } catch (const Error &err) {
             if (prog == this->prog)
-                console->write("[Line " + QString::number(prog->getErrLineNum()) + "] " + err.what());
+                console->write("[Error] Line " + QString::number(prog->getErrLineNum()) + ": " + err.what());
             else
-                console->write(err.what());
+                console->write("[Error] " + err.what());
         }
         if (prog->getState() == Program::State::OUTPUT) {
             console->write(prog->getOutput());

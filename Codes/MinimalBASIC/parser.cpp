@@ -5,7 +5,6 @@
 #include <QStringList>
 #include <QStack>
 #include <QRegExp>
-#include <QDebug>
 
 Expression * Parser::parse(const QString &str) {
     QStringList tokens = Tokenizer::tokenize(str);

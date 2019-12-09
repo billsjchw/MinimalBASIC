@@ -1,13 +1,12 @@
 #include "statement.h"
-#include <QString>
-#include <QStringList>
-#include <QRegExp>
 #include "tokenizer.h"
 #include "parser.h"
 #include "error.h"
 #include "program.h"
 #include "util.h"
-#include <QDebug>
+#include <QString>
+#include <QStringList>
+#include <QRegExp>
 
 Statement::~Statement() {}
 
@@ -95,8 +94,8 @@ void InputStmt::exec(Program *prog, Context *context) {
                 throw InputNumberOutOfRange(input);
             else {
                 context->setVar(identifier, value);
-                ++prog->pc;
                 prog->state = Program::State::NONE;
+                ++prog->pc;
             }
         }
     }

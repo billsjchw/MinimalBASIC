@@ -1,9 +1,9 @@
 #ifndef PROGRAM_H
 #define PROGRAM_H
 
+#include "context.h"
 #include <QMap>
 #include <QString>
-#include "context.h"
 
 class Statement;
 

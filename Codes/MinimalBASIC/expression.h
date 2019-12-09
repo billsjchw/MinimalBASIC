@@ -1,8 +1,8 @@
 #ifndef EXPRESSION_H
 #define EXPRESSION_H
 
-#include <QString>
 #include "context.h"
+#include <QString>
 
 class Expression: public QObject {
 public:

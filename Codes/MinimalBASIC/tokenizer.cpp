@@ -25,7 +25,7 @@ QStringList Tokenizer::tokenize(const QString &str) {
             ret.append(token);
     }
     for (int i = 0; i < ret.length(); ++i)
-        if ((ret.at(i) == "+" || ret.at(i) == "-") && (!i || ret.at(i - i) == "(" || ops.contains(ret.at(i - 1))))
+        if ((ret.at(i) == "+" || ret.at(i) == "-") && (!i || ret.at(i - 1) == "(" || ops.contains(ret.at(i - 1))))
             ret.replace(i, "u" + ret.at(i));
     return ret;
 }

@@ -11,7 +11,7 @@ const QStringList stmtNames = { "rem", "print", "let", "input", "end", "goto", "
 
 const QStringList immStmtNames = { "print", "let", "input" };
 
-const QStringList ctrlCmds = { "list", "clear", "run" };
+const QStringList ctrlCmds = { "list", "clear", "run", "quit", "help" };
 
 int intPow(int lhs, int rhs) {
     if (!rhs)

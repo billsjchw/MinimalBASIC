@@ -1,7 +1,6 @@
 #include "expression.h"
 #include "error.h"
 #include "util.h"
-#include <QDebug>
 
 Expression::~Expression() {}
 

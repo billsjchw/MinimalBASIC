@@ -1,0 +1,38 @@
+Welcome to Minimal BASIC!
+
+Statements Implemented
+REM -- REM statement is used for comments.
+Format: REM comment
+------------------------------------------------
+LET -- LET statement is BASIC¡¯s assignment statement.
+Format: LET var = exp
+LET statement can be executed immediately.
+------------------------------------------------
+PRINT -- PRINT statement is used to print the value of the expression on the console.
+Format: PRINT exp
+PRINT statement can be executed immediately.
+------------------------------------------------
+INPUT -- INPUT statement is used to read in a value to be stored in a variable.
+Format: INPUT var
+INPUT statement can be executed immediately.
+------------------------------------------------
+GOTO -- GOTO statement is used to force an unconditional change in the control flow of the program.
+Format: GOTO n
+------------------------------------------------
+IF -- IF statement provides conditional control.
+Format: IF exp1 op exp2 THEN n
+Conditional operators: =, < or >
+------------------------------------------------
+END -- END statement marks the end of the program.
+Format: END
+
+Commands Implemented
+RUN -- Run the program.
+LIST -- List the program.
+CLEAR -- Clear the program.
+HELP -- Show the help text.
+QUIT -- Exit from Minimal BASIC. 
+
+Expressions
+Operands: 32-bit signed integer variables or constants
+Operators: +, -, *, /, **, +(unary), -(unary)
